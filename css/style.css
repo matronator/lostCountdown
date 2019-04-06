@@ -70,6 +70,10 @@ body {
   margin-right: 1rem;
 }
 
+.span-out {
+  white-space: pre-wrap;
+}
+
 #cursor {
   pointer-events: none;
   font-size: 2rem;
@@ -77,8 +81,8 @@ body {
 }
 
 .blink {
-  animation: blinker 1s step-start infinite;
-  -webkit-animation: blinker 1s step-start infinite;
+  animation: blinker 1200ms step-start infinite;
+  -webkit-animation: blinker 1200ms step-start infinite;
 }
 
 @keyframes blinker {

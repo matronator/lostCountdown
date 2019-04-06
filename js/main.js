@@ -6,12 +6,28 @@ $( document ).ready(function() {
 
   var prefix = ">: ";
   var typed;
-  // var shouldBlink = false;
   var prefixObj = $(".span-prefix");
   var output = $(".span-out");
   var outScreen = $("#computer-screen");
   var cursor = $("#cursor");
   var cmd = $("#cmd");
+
+  // Debounce function from https://davidwalsh.name/javascript-debounce-function
+
+  function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    }
+  }
 
   cmd.bind("copy cut paste", function( event ) {
     event.preventDefault();
@@ -20,32 +36,41 @@ $( document ).ready(function() {
   prefixObj.text(prefix);
   cursor.removeClass("blink");
 
-  /*
-  function blink() {
-    if (shouldBlink === true) {
-      cursor.fadeOut(500, function() {
-        cursor.fadeIn(500, function() {
-          blink();
-        })
-      });
-    }
-  }
-  */
-
   outScreen.click(function() {
     cmd.focus();
     cursor.addClass("blink");
   });
+
+  cmd.blur(function() {
+    cursor.removeClass("blink");
+  })
 
   cmd.on("input", function ( event ) {
     typed = cmd.val();
     output.text(typed);
   });
 
+  /* 48 to 90 are numbers and letters
+  /* 96 to 105 are numpad numbers
+  /* 8 = backspase
+  /* 9 = tab
+  /* 13 = enter
+  /* 16 = shift
+  /* 20 = caps lock
+  /* 32 = space */
+
   cmd.keydown(function( event ) {
     if (!((event.keyCode >= 48 && event.keyCode <= 90) || (event.keyCode >= 96 && event.keyCode <= 105) || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13 || event.keyCode == 16 || event.keyCode == 20 || event.keyCode == 32)) {
       event.preventDefault();
+    } else {
+      if(!(event.keyCode == 16 || event.keyCode == 20)) {
+        cursor.removeClass("blink");
+      }
     }
   });
+
+  cmd.keyup(debounce(function() {
+    cursor.addClass("blink");
+  }, 1000));
 
 });
