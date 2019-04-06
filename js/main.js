@@ -73,4 +73,34 @@ $( document ).ready(function() {
     cursor.addClass("blink");
   }, 1000));
 
+  // Temporary
+  // beep.wav - 2.051s -> 2051ms
+
+  // Safari complicating everything, making my life miserable...
+  // apparently audio.play(); doesn't work unless it's on click etc.
+
+  var timeleft = $("#time-left").text();
+  var beep = new Audio("/sound/beep.m4a");
+
+  beep.onended = function() {
+    if(timeleft <= 4) {
+      this.currentTime = 0;
+      this.play();
+    }
+  };
+
+  $("#time-left").click(function() {
+    $( this ).text(timeleft - 1);
+    timeleft = $( this ).text();
+    if(timeleft <= 0) {
+      timeleft = 10;
+      $( this ).text(timeleft);
+    }
+    if(timeleft <= 4) {
+      beep.play();
+    }
+  });
+
+  // End of temporary
+
 });
