@@ -1,0 +1,113 @@
+@font-face {
+  font-family: "OSX";
+  src: url("/fonts/OSXDarwin.ttf");
+}
+
+html, body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: #000000;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.row {
+  position: relative;
+  width: 100%;
+}
+
+#countdown-timer {
+  display: flex;
+  color: #dddddd;
+  font-family: "Arial", sans-serif;
+  justify-content: center;
+  align-items: center;
+}
+
+#countdown-timer h1 {
+  font-size: 3rem;
+}
+
+#computer-screen {
+  display: flex;
+  flex: 1;
+  font-family: "OSX", "Menlo", "Monaco", monospace;
+  padding: 20px 60px;
+  color: #36FF99;
+}
+
+#computer-screen::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(#0000002a, #0000002a 1px, transparent 1px, transparent 2px);
+}
+
+.span-prefix, .span-out {
+  pointer-events: none;
+  font-size: 2rem;
+  font-family: "OSX";
+  color: #36FF99;
+  text-shadow: 0 0 5px #36FF99da;
+}
+
+.span-prefix {
+  margin-right: 1rem;
+}
+
+#cursor {
+  pointer-events: none;
+  font-size: 2rem;
+  color: #36FF99;
+}
+
+.blink {
+  animation: blinker 1s step-start infinite;
+  -webkit-animation: blinker 1s step-start infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+#cmd {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 0;
+  overflow: hidden;
+}
+
+/*
+#cmd {
+  background-color: #000000;
+  font-family: "DOS", "Menlo", "Monaco", monospace;
+  font-size: 1.5rem;
+  color: #36FF99;
+  caret-color: #36FF99;
+  text-shadow: 0 0 5px #36FF99da;
+}
+
+.span-prefix::after {
+  content: "\025AE";
+  position: relative;
+  font-size: 1.5rem;
+  color: #36FF99;
+} */
