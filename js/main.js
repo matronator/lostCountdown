@@ -14,6 +14,23 @@ $( document ).ready(function() {
   var timeLeft = $("#time-left").text();
   var alarmPlaying = 0;
 
+  // Temporary
+  // beep.wav - 2.051s -> 2051ms
+
+  // Safari complicating everything, making my life miserable...
+  // apparently audio.play(); doesn't work unless it's on click etc.
+
+  var beep = new Audio("/sound/beep.m4a");
+
+  beep.onended = function() {
+    if(alarmPlaying == 1) {
+      this.currentTime = 0;
+      this.play();
+    }
+  };
+
+  // End of temporary
+
   function getTime() {
     $.ajax({
       url: 'http://lost.matronator.com/timeleft.php',
@@ -30,6 +47,12 @@ $( document ).ready(function() {
       }
     });
   }
+
+  getTime();
+
+  setInterval(function() {
+    getTime();
+  }, 20000);
 
   // Debounce function from https://davidwalsh.name/javascript-debounce-function
 
@@ -55,11 +78,10 @@ $( document ).ready(function() {
   prefixObj.text(prefix);
   cursor.removeClass("blink");
 
-  outScreen.click(debounce(function() {
-    getTime();
+  outScreen.click(function() {
     cmd.focus();
     cursor.addClass("blink");
-  }, 5000));
+  });
 
   cmd.blur(function() {
     cursor.removeClass("blink");
@@ -93,29 +115,8 @@ $( document ).ready(function() {
     cursor.addClass("blink");
   }, 1000));
 
-  // Temporary
-  // beep.wav - 2.051s -> 2051ms
-
-  // Safari complicating everything, making my life miserable...
-  // apparently audio.play(); doesn't work unless it's on click etc.
-
-  var beep = new Audio("/sound/beep.m4a");
-
-  beep.onended = function() {
-    if(alarmPlaying == 1) {
-      this.currentTime = 0;
-      this.play();
-    }
-  };
-
   $("#time-left").click(debounce(function() {
     getTime();
   }, 5000));
-
-  // End of temporary
-
-  setInterval(function() {
-    getTime();
-  }, 20000);
 
 });
