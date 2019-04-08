@@ -2,7 +2,7 @@
 
 4 8 15 16 23 42
 
-[Live Demo](http://lost.matronator.com) <sup><sub>(only countdown and interface, submitting the input doesn't do anything yet)</sub></sup>
+[Live Demo](http://lost.matronator.com)
 
 ### A note on browser support (Safari and Chrome)...
 
