@@ -55,11 +55,11 @@ $( document ).ready(function() {
   prefixObj.text(prefix);
   cursor.removeClass("blink");
 
-  outScreen.click(function() {
+  outScreen.click(debounce(function() {
     getTime();
     cmd.focus();
     cursor.addClass("blink");
-  });
+  }, 5000));
 
   cmd.blur(function() {
     cursor.removeClass("blink");
