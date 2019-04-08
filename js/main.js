@@ -13,6 +13,7 @@ $( document ).ready(function() {
   var cmd = $("#cmd");
   var timeLeft = $("#time-left").text();
   var alarmPlaying = 0;
+  var shouldPlay = 0;
 
   // Temporary
   // beep.wav - 2.051s -> 2051ms
@@ -21,9 +22,10 @@ $( document ).ready(function() {
   // apparently audio.play(); doesn't work unless it's on click etc.
 
   var beep = new Audio("/sound/beep.m4a");
+  var rewind = new Audio("/sound/rewind.m4a");
 
   beep.onended = function() {
-    if(alarmPlaying == 1) {
+    if(alarmPlaying >= 2) {
       this.currentTime = 0;
       this.play();
     }
@@ -40,10 +42,30 @@ $( document ).ready(function() {
         var data = result;
         $("#time-left").text(result.totalM);
         timeLeft = result.totalM;
-        alarmPlaying = result.alarmon;
-        if (alarmPlaying == 1) {
-          beep.play();
+        shouldPlay = result.alarmon;
+        if (shouldPlay == 1) {
+          if (alarmPlaying < 2) {
+            alarmPlaying = 2;
+            beep.play();
+          }
+        } else {
+          alarmPlaying = 0;
         }
+      }
+    });
+  }
+
+  function resetTimer() {
+    $.ajax({
+      url: 'http://lost.matronator.com/entercode.php',
+      type: 'GET',
+      dataType: 'json',
+      success: function(result) {
+        getTime();
+        shouldPlay = 0;
+        alarmPlaying = 0;
+        cmd.val("");
+        output.text("");
       }
     });
   }
@@ -108,6 +130,27 @@ $( document ).ready(function() {
       if(!(event.keyCode == 16 || event.keyCode == 20)) {
         cursor.removeClass("blink");
       }
+    }
+  });
+
+  cmd.on("keyup keypress", function( event ) {
+    var keyc = event.keyCode || event.which;
+    if (keyc === 13) {
+      event.preventDefault;
+
+      if (timeLeft > 4) {
+        cmd.val("");
+        output.text("Code can only be submitted when alarm starts. (press Y to confirm)");
+      } else {
+        if (cmd.val() == "4 8 15 16 23 42") {
+          rewind.play();
+          resetTimer();
+        } else {
+          cmd.val("");
+          output.text("");
+        }
+      }
+      return false;
     }
   });
 

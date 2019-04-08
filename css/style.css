@@ -60,7 +60,7 @@ body {
 
 .span-prefix, .span-out {
   pointer-events: none;
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-family: "OSX";
   color: #36FF99;
   text-shadow: 0 0 5px #36FF99da;
@@ -76,7 +76,7 @@ body {
 
 #cursor {
   pointer-events: none;
-  font-size: 2rem;
+  font-size: 1.4rem;
   color: #36FF99;
 }
 
