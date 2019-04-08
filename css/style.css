@@ -35,7 +35,7 @@ body {
   align-items: center;
 }
 
-#countdown-timer h1 {
+#countdown-timer #time-left {
   font-size: 3rem;
 }
 
